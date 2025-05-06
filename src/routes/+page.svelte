@@ -9,7 +9,7 @@
 </script>
 
 {#snippet navLink(href, name)}
-	<li class="scrollspy" style:animation-timeline={`--${kebabCase(name)}`}>
+	<li>
 		<a href={`#${href}`} onclick={() => popover.hidePopover()}>{name}</a>
 	</li>
 {/snippet}
@@ -41,11 +41,7 @@
 	</aside>
 	<main class="content col-span-12 lg:col-span-9">
 		{#each links as item}
-			<section
-				id={item}
-				style:scroll-timeline-name={`--${kebabCase(item)}`}
-				style:scroll-timeline-axis="block"
-			>
+			<section id={item}>
 				<div class="prose mx-auto">
 					<h2>{item}</h2>
 					<p>
@@ -152,23 +148,6 @@
 			background-color: var(--color-amber-100);
 			border: 1px solid black;
 			padding-block: calc(5rem / 2);
-		}
-	}
-
-	.scrollspy {
-		border-left: 1rem solid transparent;
-		animation-name: scrollspy;
-	}
-
-	@keyframes scrollspy {
-		0% {
-			border-left-color: transparent;
-		}
-		50% {
-			border-left-color: black;
-		}
-		100% {
-			border-left-color: transparent;
 		}
 	}
 </style>
