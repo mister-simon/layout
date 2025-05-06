@@ -32,7 +32,9 @@
 		</div>
 	</header>
 	<nav popover id="mobile-nav" class="mobile-nav lg:hidden" bind:this={popover}>
-		{@render navigation()}
+		<div class="mobile-nav-inner">
+			{@render navigation()}
+		</div>
 	</nav>
 	<aside class="desktop-nav col-span-3 max-lg:hidden">
 		<div class="desktop-nav-inner">
@@ -69,6 +71,7 @@
 	:global(html) {
 		--nav-height: 4rem;
 		scroll-padding-block-start: calc(var(--nav-height, 0px) + 5svh);
+		overflow-inline: clip;
 	}
 
 	.layout {
@@ -97,7 +100,6 @@
 
 		&::backdrop {
 			top: anchor(--navbar bottom);
-			background: rgb(0 0 0 / 0.7);
 		}
 	}
 
@@ -148,6 +150,51 @@
 			background-color: var(--color-amber-100);
 			border: 1px solid black;
 			padding-block: calc(5rem / 2);
+		}
+	}
+
+	/* Transitioning the Popover */
+	.mobile-nav {
+		--transition-duration: 1s;
+
+		@media (prefers-reduced-motion: no-preference) {
+			transition:
+				transform var(--transition-duration),
+				overlay var(--transition-duration) allow-discrete,
+				display var(--transition-duration) allow-discrete;
+
+			&::backdrop {
+				transition:
+					background-color var(--transition-duration),
+					overlay var(--transition-duration) allow-discrete,
+					display var(--transition-duration) allow-discrete;
+			}
+		}
+
+		/* Final state of the exit animation */
+		transform: translateX(100%);
+
+		&::backdrop {
+			background-color: rgb(0 0 0 / 0%);
+		}
+
+		&:popover-open {
+			transform: translateX(0%);
+
+			&::backdrop {
+				background-color: rgb(0 0 0 / 25%);
+			}
+		}
+	}
+
+	@starting-style {
+		.mobile-nav:popover-open {
+			/* opacity: 0; */
+			transform: translateX(100%);
+		}
+
+		.mobile-nav:popover-open::backdrop {
+			background-color: rgb(0 0 0 / 0%);
 		}
 	}
 </style>
